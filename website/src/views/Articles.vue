@@ -1,35 +1,29 @@
 <template>
-      <a-list
-    class="list-demo-action-layout"
-    :bordered="false"
-    :data="dataSource"
-    :pagination-props="paginationProps"
-  >
-    <template #item="{ item }">
-      <a-list-item class="list-demo-item" action-layout="vertical">
-        <template #actions>
-          <span><icon-heart />83</span>
-          <span><icon-star />{{ item.index }}</span>
-          <span><icon-message />Reply</span>
+  <div class="articles-container">
+      <a-list class="list-demo-action-layout" :bordered="false" :data="dataSource" :pagination-props="paginationProps">
+        <template #item="{ item }">
+          <a-list-item class="list-demo-item" action-layout="vertical">
+            <template #actions>
+              <span><icon-heart />83</span>
+              <span><icon-star />{{ item.index }}</span>
+              <span><icon-message />Reply</span>
+            </template>
+            <template #extra>
+              <div className="image-area">
+                <img alt="arco-design" :src="item.imageSrc" />
+              </div>
+            </template>
+            <a-list-item-meta :title="item.title" :description="item.description">
+              <template #avatar>
+                <a-avatar shape="square">
+                  <img alt="avatar" :src="item.avatar" />
+                </a-avatar>
+              </template>
+            </a-list-item-meta>
+          </a-list-item>
         </template>
-        <template #extra>
-          <div className="image-area">
-            <img alt="arco-design" :src="item.imageSrc" />
-          </div>
-        </template>
-        <a-list-item-meta
-          :title="item.title"
-          :description="item.description"
-        >
-          <template #avatar>
-            <a-avatar shape="square">
-              <img alt="avatar" :src="item.avatar" />
-            </a-avatar>
-          </template>
-        </a-list-item-meta>
-      </a-list-item>
-    </template>
-  </a-list>
+      </a-list>
+  </div>
 </template>
 <script>
 import { reactive } from 'vue'
@@ -61,7 +55,7 @@ export default {
     return {
       dataSource,
       paginationProps: reactive({
-        defaultPageSize: 3,
+        defaultPageSize: 10,
         total: dataSource.length
       })
     }
@@ -87,5 +81,9 @@ export default {
 
 .list-demo-action-layout .arco-list-item-action .arco-icon {
   margin: 0 4px;
+}
+
+.articles-container {
+  width: 80vw;
 }
 </style>

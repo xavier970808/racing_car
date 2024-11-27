@@ -9,10 +9,28 @@
                     cursor: 'text',
                 }" />
             </a-menu-item>
-            <a-menu-item key="/" @click="navigateTo('/')">首頁</a-menu-item>
-            <a-menu-item key="/articles" @click="navigateTo('/articles')">文章</a-menu-item>
-            <a-menu-item key="/about" @click="navigateTo('/about')">關於</a-menu-item>
+            <a-menu-item key="/" @click="navigateTo('/')"><icon-home />首頁</a-menu-item>
+            <a-menu-item key="/articles" @click="navigateTo('/articles')"><icon-book />文章</a-menu-item>
+            <a-menu-item key="/about" @click="navigateTo('/about')"><icon-info />關於</a-menu-item>
+
         </a-menu>
+        <div class="menu-right" align="right">
+            <div :style="{ padding: '20px' }">
+                
+            <a-trigger trigger="click" position="left" auto-fit-position :unmount-on-close="false">
+                <icon-search />
+                <template #content>
+                    <div class="trigger-search">
+                        <div align="center">
+                            <a-input-search :style="{ width: '320px' }" align="right"
+                                placeholder="Please enter something" />
+                        </div>
+                    </div>
+                </template>
+            </a-trigger>
+            </div>
+        </div>
+
     </div>
 </template>
 <style scoped>
@@ -29,6 +47,14 @@
     z-index: 1000;
     width: 100%;
     padding: 0px;
+}
+
+.trigger-search {
+    padding: 10px;
+    width: 350px;
+    background-color: var(--color-bg-popup);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
 }
 </style>
 <script>

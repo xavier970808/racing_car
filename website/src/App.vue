@@ -3,32 +3,29 @@ import NavBar from './components/NavBar.vue'
 </script>
 
 <template>
-  <div class="app-container">
-    <header>
-      <NavBar />
-    </header>
-    <router-view />
+  <div class="layout">
+    <a-layout>
+      <a-layout-header><NavBar /></a-layout-header>
+        
+      <a-layout-content><router-view /></a-layout-content>
+    </a-layout>
   </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 0;
-}
-
-.app-container {
+.layout :deep(.arco-layout-header)
+.layout :deep(.arco-layout-content) {
   display: flex;
   flex-direction: column;
-  /* 确保子元素纵向排列 */
+  justify-content: center;
+  font-stretch: condensed;
+  text-align: center;
 }
-
-router-view {
-  flex-grow: 1;
-  /* 让内容部分自适应剩余空间 */
+.layout :deep(.arco-layout-header) {
+  height: 64px;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.layout :deep(.arco-layout-content) {
+  box-sizing: content-box;
+  width:  100%;
 }
 </style>

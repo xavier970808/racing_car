@@ -16,21 +16,37 @@
         </a-menu>
         <div class="menu-right" align="right">
             <div :style="{ padding: '20px' }">
-                
-            <a-trigger trigger="click" position="left" auto-fit-position :unmount-on-close="false">
-                <icon-search />
-                <template #content>
-                    <div class="trigger-search">
-                        <div align="center">
-                            <a-input-search :style="{ width: '320px' }" align="right"
-                                placeholder="Please enter something" />
+                <a-trigger trigger="click" position="left" auto-fit-position :unmount-on-close="false">
+                    <icon-search />
+                    <template #content>
+                        <div class="trigger-search">
+                            <div align="center">
+                                <a-input-search :style="{ width: '320px' }" align="right"
+                                    placeholder="Please enter something" />
+                            </div>
                         </div>
-                    </div>
-                </template>
-            </a-trigger>
+                    </template>
+                </a-trigger>
+            </div>
+            <div :style="{ padding: '20px' }">
+                <a-trigger trigger="click" position="top" auto-fit-position :unmount-on-close="false">
+                    <IconUser />
+                    <template #content>
+                        <div class="trigger-user">
+                            <div align="center" :style="{ padding: '10px' }">
+                                <a-avatar :style="{ backgroundColor: '#3370ff', marginBottom: '10px' }">
+                                    <IconUser />
+                                </a-avatar>
+                                <br />
+                                <label :style="{  marginBottom: '300px' }">Username</label>
+                                <br />
+                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }">登入</a-button>
+                            </div>
+                        </div>
+                    </template>
+                </a-trigger>
             </div>
         </div>
-
     </div>
 </template>
 <style scoped>
@@ -47,11 +63,25 @@
     z-index: 1000;
     width: 100%;
     padding: 0px;
+    background-color: var(--color-bg-2);
+}
+
+.menu-right {
+    display: flex;
+    padding: 0px;
 }
 
 .trigger-search {
     padding: 10px;
     width: 350px;
+    background-color: var(--color-bg-popup);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+.trigger-user {
+    padding: 10px;
+    width: 250px;
     background-color: var(--color-bg-popup);
     border-radius: 4px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);

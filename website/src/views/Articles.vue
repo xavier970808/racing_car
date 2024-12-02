@@ -1,39 +1,59 @@
 <template>
-  <div class="articles-container">
-      <a-list class="list-demo-action-layout" :bordered="false" :data="dataSource" :pagination-props="paginationProps">
-        <template #item="{ item }">
-          <a-list-item class="list-demo-item" action-layout="vertical">
-            <template #actions>
-              <span><icon-heart />83</span>
-              <span><icon-star />{{ item.index }}</span>
-              <span><icon-message />Reply</span>
-            </template>
-            <template #extra>
-              <div className="image-area">
-                <img alt="arco-design" :src="item.imageSrc" />
-              </div>
-            </template>
-            <a-list-item-meta :title="item.title" :description="item.description">
-              <template #avatar>
-                <a-avatar shape="square">
-                  <img alt="avatar" :src="item.avatar" />
-                </a-avatar>
+
+  <div class="articles-container" width="100vw">
+    <a-layout-header style="display: flex; justify-content: space-between; align-items: center; padding: 24px; height: 64px; background: #fff;">
+      <h1 style="padding:24px;">文章列表</h1>
+      <a-button type="primary" style="margin-left:24px;" href="/articles/create">新增文章</a-button>
+    </a-layout-header>
+    <a-row width="100vw" justify="center">
+      <a-col flex="3" class="content">
+        <a-list class="list-demo-action-layout" :bordered="false" :data="dataSource"
+          :pagination-props="paginationProps">
+          <template #item="{ item }">
+            <a-list-item class="list-demo-item" action-layout="vertical">
+              <template #actions>
+                <span><icon-user /> author </span>
+                <span><icon-heart />83</span>
+                <span><icon-star />{{ item.index }}</span>
+                <span><icon-message />Reply</span>
               </template>
-            </a-list-item-meta>
-          </a-list-item>
-        </template>
-      </a-list>
+              <template #extra>
+                <div class="image-area">
+                  <img alt="arco-design" :src="item.imageSrc" />
+                </div>
+              </template>
+              <a-list-item-meta>
+                <template #title>
+                  <h2>{{ item.title }}</h2>
+                </template>
+              </a-list-item-meta>
+            </a-list-item>
+          </template>
+        </a-list>
+      </a-col>
+      <a-col class="right-col" flex="1" padding="24px">
+        <a-card title="隨機推薦文章">
+          <a-card :style="{ marginBottom: '20px' }" title="Inner Card Title">
+            <template #extra>
+              <a-link>More</a-link>
+            </template>
+            Inner Card Content
+          </a-card>
+          <a-card title="Inner Card Title">
+            <template #extra>
+              <a-link>More</a-link>
+            </template>
+            Inner Card Content
+          </a-card>
+        </a-card>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script>
 import { reactive } from 'vue'
 
 const names = ['Socrates', 'Balzac', 'Plato'];
-const avatarSrc = [
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp',
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/e278888093bef8910e829486fb45dd69.png~tplv-uwbnlip3yd-webp.webp',
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/9eeb1800d9b78349b24682c3518ac4a3.png~tplv-uwbnlip3yd-webp.webp',
-];
 const imageSrc = [
   '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/29c1f9d7d17c503c5d7bf4e538cb7c4f.png~tplv-uwbnlip3yd-webp.webp',
   '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/04d7bc31dd67dcdf380bc3f6aa07599f.png~tplv-uwbnlip3yd-webp.webp',
@@ -42,7 +62,6 @@ const imageSrc = [
 const dataSource = new Array(15).fill(null).map((_, index) => {
   return {
     index: index,
-    avatar: avatarSrc[index % avatarSrc.length],
     title: names[index % names.length],
     description:
       'Beijing ByteDance Technology Co., Ltd. is an enterprise located in China. ByteDance has products such as TikTok, Toutiao, volcano video and Douyin (the Chinese version of TikTok).',
@@ -63,11 +82,23 @@ export default {
 };
 </script>
 <style scoped>
+
+.content {
+  padding: 24px;
+
+}
+
+.right-col {
+  margin-top: 40px;
+  padding: 0 24px;
+}
+
 .list-demo-action-layout .image-area {
-  width: 183px;
-  height: 119px;
+  width: 160px;
+  height: 100px;
   border-radius: 2px;
   overflow: hidden;
+
 }
 
 .list-demo-action-layout .list-demo-item {
@@ -84,6 +115,25 @@ export default {
 }
 
 .articles-container {
-  width: 80vw;
+  position: relative;
+  width: 100%;
+  margin: 0px auto;
+  padding: 0 24px;
+}
+
+@media (max-width: 800px) {
+  .list-demo-action-layout .image-area {
+    width: 101px;
+    height: 62px;
+  }
+
+  .articles-container {
+    margin: 0;
+    padding: 0;
+  }
+
+  .right-col {
+    display: none;
+  }
 }
 </style>

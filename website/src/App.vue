@@ -4,28 +4,26 @@ import NavBar from './components/NavBar.vue'
 
 <template>
   <div class="layout">
-    <a-layout>
-      <a-layout-header><NavBar /></a-layout-header>
-        
-      <a-layout-content><router-view /></a-layout-content>
-    </a-layout>
+      <header><NavBar /></header>
+      <div class="content"><router-view /></div>
+    
   </div>
 </template>
 
 <style scoped>
-.layout :deep(.arco-layout-header)
-.layout :deep(.arco-layout-content) {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-stretch: condensed;
-  text-align: center;
+.layout{
+  width: 100%;
+  max-width: 1200px;
+  overflow-x: hidden;
+  padding: 0px;
 }
-.layout :deep(.arco-layout-header) {
-  height: 64px;
+.header{
+  position: absolute;
+  width : 100%;
 }
-.layout :deep(.arco-layout-content) {
-  box-sizing: content-box;
-  width:  100%;
+.content{
+  position: relative;
+  margin: 0 auto;
+  margin-top: 60px
 }
 </style>

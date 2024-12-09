@@ -6,14 +6,13 @@ import NavBar from './components/NavBar.vue'
   <div class="layout">
       <header><NavBar /></header>
       <div class="content"><router-view /></div>
-    
   </div>
 </template>
 
 <style scoped>
 .layout{
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   overflow-x: hidden;
   padding: 0px;
 }
@@ -24,6 +23,6 @@ import NavBar from './components/NavBar.vue'
 .content{
   position: relative;
   margin: 0 auto;
-  margin-top: 60px
+  margin-top: 60px;
 }
 </style>

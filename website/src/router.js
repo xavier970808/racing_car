@@ -5,6 +5,7 @@ import About from './views/About.vue'
 import Articles from './views/Articles.vue'
 import ArticleRead from './views/ArticleRead.vue'
 import ArticleCreate from './views/ArticleCreate.vue'
+import snake from './views/snake.vue';
 
 const routes = [
   { path: '/', component: Home },
@@ -12,7 +13,8 @@ const routes = [
   { path: '/articles', component: Articles },
   //{ path: '/articles/read/:id', component: ArticleRead },
   { path: '/articles/read/', component: ArticleRead },
-  { path: '/articles/create', component: ArticleCreate}
+  { path: '/articles/create', component: ArticleCreate},
+  { path: '/snake', component: snake}
 
 ]
 

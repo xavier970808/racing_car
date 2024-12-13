@@ -14,8 +14,9 @@
             <a-menu-item key="/about" @click="navigateTo('/about')"><icon-info />關於</a-menu-item>
             <a-sub-menu key="/0">
                 <template #icon><icon-apps></icon-apps></template>
-                <template #title>game 1</template>
+                <template #title>game</template>
                 <a-menu-item key="/snake" @click="navigateTo('/snake')">snake</a-menu-item>
+                <a-menu-item key="/maze" @click="navigateTo('/maze')">迷宮</a-menu-item>
             </a-sub-menu>
         </a-menu>
         <div class="menu-right" align="right">

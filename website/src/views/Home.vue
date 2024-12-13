@@ -32,7 +32,9 @@ export default {
                     </a-carousel-item>
                 </a-carousel>
             </a-layout-header>
-            <a-layout-content>
+            <a-layout-content style="padding: 24px">
+                <h1>歡迎來到我們的網站</h1>
+                <p></p>
                 
                 <a-card hoverable :style="{ width: '360px', marginBottom: '20px' }">
                     <div :style="{
@@ -68,5 +70,11 @@ export default {
 
 .a-layout-content {
     flex: 1;
+    padding: 24px;
+}
+@media (max-width: 800px) {
+    .a-layout-content{
+        padding: 16px;
+    }
 }
 </style>

@@ -89,7 +89,7 @@
 </style>
 <script>
 export default {
-    name: 'NavBar',
+    name: 'MobileNavBar',
     computed: {
         currentSelectedKey() {
             return this.$route.path.startsWith('/articles') ? '/articles' : this.$route.path;

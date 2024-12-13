@@ -3,6 +3,8 @@
       <h1>貪食蛇遊戲</h1>
       <canvas id="gameCanvas" ref="gameCanvas" width="400" height="400"></canvas>
       <div id="score">分數: {{ score }}</div>
+      <!-- 開始遊戲的按鈕 -->
+      <button v-if="!gameStarted" @click="startGame">開始遊戲</button>
     </div>
   </template>
   
@@ -18,6 +20,8 @@
         dx: 20,  // 控制蛇的方向 (水平)
         dy: 0,   // 控制蛇的方向 (垂直)
         score: 0,  // 分數
+        gameInterval: null,  // 遊戲更新的定時器
+        gameStarted: false,  // 是否開始遊戲
       };
     },
     methods: {
@@ -75,6 +79,7 @@
       gameOver() {
         clearInterval(this.gameInterval);  // 停止遊戲循環
         alert(`遊戲結束！你的分數是: ${this.score}`);
+        this.gameStarted = false;  // 重置遊戲狀態
       },
       // 處理鍵盤事件
       handleKeydown(event) {
@@ -92,13 +97,25 @@
           this.dy = 0;
         }
       },
+      // 開始遊戲
+      startGame() {
+        this.gameStarted = true;
+        this.snake = [{ x: 160, y: 160 }];  // 重置蛇的初始位置
+        this.food = { x: 200, y: 200 };  // 重置食物的初始位置
+        this.score = 0;  // 重置分數
+        this.dx = 20;  // 重置蛇的水平移動
+        this.dy = 0;   // 重置蛇的垂直移動
+  
+        // 設置鍵盤事件監聽
+        window.addEventListener('keydown', this.handleKeydown);
+  
+        // 啟動遊戲
+        this.gameInterval = setInterval(this.updateGame, 100);  // 每100毫秒更新一次遊戲
+      },
     },
     mounted() {
       // 設置鍵盤事件監聽
       window.addEventListener('keydown', this.handleKeydown);
-  
-      // 啟動遊戲
-      this.gameInterval = setInterval(this.updateGame, 100);  // 每100毫秒更新一次遊戲
     },
     beforeDestroy() {
       // 組件銷毀前移除鍵盤事件監聽
@@ -135,6 +152,21 @@
     margin-top: 10px;
     font-size: 18px;
     color: #333;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
   }
   </style>
   

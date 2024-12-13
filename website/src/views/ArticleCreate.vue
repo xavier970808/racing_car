@@ -1,8 +1,8 @@
 <script>
-import { reactive } from 'vue';
-import { IconUpload, IconFileAudio, IconClose, IconFaceFrownFill } from '@arco-design/web-vue/es/icon';
+import { h, reactive, ref } from 'vue';
 export default {
     setup() {
+        const type = ref('text');
         const form = reactive({
             name: '',
             post: '',
@@ -11,22 +11,10 @@ export default {
         const handleSubmit = (data) => {
             console.log(data);
         };
-        const getCustomUploadIcon = () => {
-            return {
-                retryIcon: () => h(IconUpload),
-                cancelIcon: () => h(IconClose),
-                fileIcon: () => h(IconFileAudio),
-                removeIcon: () => h(IconClose),
-                errorIcon: () => h(IconFaceFrownFill),
-                fileName: (file) => {
-                    return `文件名： ${file.name}`
-                },
-            };
-        };
         return {
             form,
             handleSubmit,
-            getCustomUploadIcon,
+            type,
         };
     },
 }
@@ -51,47 +39,19 @@ export default {
                 </a-form-item>
                 <a-form-item label="上傳圖片" field="image">
                     <a-upload limit="1" draggable="1"
-                        action="https://watershed-differential-mon-tracked.trycloudflare.com/uploadpic"
-                        accept=".jpg, .jpeg, .png"
-                        :custom-icon="getCustomUploadIcon">
-                        <template #upload-button>
-                            <div style="
-            width: 100%;
-    padding: 50px 0;
-    color: var(--color-text-1);
-    text-align: center;
-    background-color: var(--color-fill-1);
-    border: 1px dashed var(--color-neutral-3);
-    border-radius: var(--border-radius-small);">
-                                <div>
-                                    <icon-upload />
-                                    點擊或拖曳文件上傳
-                                </div>
-                            </div>
-                        </template>
-                    </a-upload>
+                        action="http://localhost:20842/uploadpic"
+                        accept=".jpg, .jpeg, .png"/>
                 </a-form-item>
                 <a-form-item label="上傳文章 (markdown)" field="markdown">
-                    <a-upload limit="1" draggable="1" upload="/uploadmd" @before-upload="beforeUploadMd" accept=".md">
-                        <template #upload-button>
-                            <div style="
-            width: 100%;
-    padding: 50px 0;
-    color: var(--color-text-1);
-    text-align: center;
-    background-color: var(--color-fill-1);
-    border: 1px dashed var(--color-neutral-3);
-    border-radius: var(--border-radius-small);">
-                                <div>
-                                    <icon-upload />
-                                    點擊或拖曳文件上傳
-                                </div>
-                            </div>
-                        </template>
-                    </a-upload>
+                    <br/>
+
+                    <br/>
+                    <a-upload limit="1" draggable="1" upload="/uploadmd" @before-upload="beforeUploadMd" accept=".md"/>
+                    
+
                 </a-form-item>
                 <a-form-item>
-                    <a-button type="primary" html-type="submit">Submit</a-button>
+                    <a-button type="primary" html-type="submit">提交</a-button>
                 </a-form-item>
             </a-form>
         </a-layout-content>

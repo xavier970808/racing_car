@@ -1,21 +1,36 @@
 <template>
     <div class="menu">
-        <a-menu mode="horizontal" theme="light" :selected-keys="[currentSelectedKey]">
-            <a-menu-item key="title" :style="{ padding: 0, marginRight: '38px' }" disabled>
-                <div :style="{
-                    width: '80px',
-                    height: '30px',
-                    background: 'var(--color-fill-3)',
-                    cursor: 'text',
-                }" />
-            </a-menu-item>
-            <a-menu-item key="/" @click="navigateTo('/')"><icon-home />首頁</a-menu-item>
-            <a-menu-item key="/articles" @click="navigateTo('/articles')"><icon-book />文章</a-menu-item>
-            <a-menu-item key="/about" @click="navigateTo('/about')"><icon-info />關於</a-menu-item>
+        <a-trigger trigger="click" position="top" :unmount-on-close="true" class="menu-trigger" :popup-translate="[0, 20]">
+            <icon-menu />
+            <template #content>
+                <a-menu mode="vertical" theme="light" :selected-keys="[currentSelectedKey]" class="menu-left">
+                    <a-menu-item key="/" @click="navigateTo('/')">
+                        <icon-home />首頁
+                    </a-menu-item>
+                    <a-menu-item key="/articles" @click="navigateTo('/articles')">
+                        <icon-book />文章
+                    </a-menu-item>
+                    <a-menu-item key="/about" @click="navigateTo('/about')">
+                        <icon-info /> 關於
+                    </a-menu-item>
+                    <a-sub-menu key="/0">
+                        <template #icon><icon-apps></icon-apps></template>
+                        <template #title>game</template>
+                        <a-menu-item key="/snake" @click="navigateTo('/snake')">snake</a-menu-item>
+                        <a-menu-item key="/maze" @click="navigateTo('/maze')">迷宮</a-menu-item>
+                    </a-sub-menu>
+                </a-menu>
+            </template>
+        </a-trigger>
 
-        </a-menu>
+        <div :style="{
+            width: '80px',
+            height: '30px',
+            background: 'var(--color-fill-3)',
+            cursor: 'text',
+        }" />
         <div class="menu-right" align="right">
-            <div :style="{ padding: '20px' }">
+            <div :style="{ padding: '20px 10px' }">
                 <a-trigger trigger="click" position="left" auto-fit-position :unmount-on-close="false">
                     <icon-search />
                     <template #content>
@@ -28,7 +43,7 @@
                     </template>
                 </a-trigger>
             </div>
-            <div :style="{ padding: '20px' }">
+            <div :style="{ padding: '20px 0px' }">
                 <a-trigger trigger="click" position="top" auto-fit-position :unmount-on-close="false">
                     <IconUser />
                     <template #content>
@@ -38,7 +53,7 @@
                                     <IconUser />
                                 </a-avatar>
                                 <br />
-                                <label :style="{  marginBottom: '300px' }">Username</label>
+                                <label :style="{ marginBottom: '300px' }">Username</label>
                                 <br />
                                 <a-button type="primary" size="small" :style="{ marginTop: '10px' }">登入</a-button>
                             </div>
@@ -53,7 +68,7 @@
 .menu {
     box-sizing: border-box;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     height: 60px;
     position: fixed;
@@ -62,8 +77,17 @@
     right: 0;
     z-index: 1000;
     width: 100%;
-    padding: 0px;
+    padding: 10px;
     background-color: var(--color-bg-2);
+}
+
+.menu-trigger {
+    padding: 10px;
+}
+
+.menu-left {
+    width: 100vw;
+    
 }
 
 .menu-right {
@@ -88,6 +112,8 @@
 }
 </style>
 <script>
+import { IconRight } from '@arco-design/web-vue/es/icon';
+
 export default {
     name: 'MobileNavBar',
     computed: {

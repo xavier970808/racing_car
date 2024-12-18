@@ -72,6 +72,7 @@ export default {
     flex: 1;
     padding: 24px;
 }
+
 @media (max-width: 800px) {
     .a-layout-content{
         padding: 16px;

@@ -7,6 +7,7 @@ import ArticleRead from './views/ArticleRead.vue'
 import ArticleCreate from './views/ArticleCreate.vue'
 import snake from './views/snake.vue'
 import maze from './views/maze.vue'
+import game from './views/game.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -16,7 +17,8 @@ const routes = [
   { path: '/articles/read/', component: ArticleRead },
   { path: '/articles/create', component: ArticleCreate},
   { path: '/snake', component: snake},
-  { path: '/maze', component: maze}
+  { path: '/maze', component: maze},
+  { path: '/game', component: game}
 
 ]
 

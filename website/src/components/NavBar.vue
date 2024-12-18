@@ -17,6 +17,7 @@
                 <template #title>game</template>
                 <a-menu-item key="/snake" @click="navigateTo('/snake')">snake</a-menu-item>
                 <a-menu-item key="/maze" @click="navigateTo('/maze')">迷宮</a-menu-item>
+                <a-menu-item key="/game" @click="navigateTo('/game')">2048</a-menu-item>
             </a-sub-menu>
         </a-menu>
         <div class="menu-right" align="right">

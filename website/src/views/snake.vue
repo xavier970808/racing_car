@@ -3,33 +3,47 @@
       <h1>貪食蛇遊戲</h1>
       <canvas id="gameCanvas" ref="gameCanvas" width="400" height="400"></canvas>
       <div id="score">分數: {{ score }}</div>
-      <!-- 開始遊戲的按鈕 -->
+      
+      <!-- Slider to adjust game speed -->
+      <div>
+        <label for="speedSlider">遊戲速度:</label>
+        <input
+          type="range"
+          id="speedSlider"
+          v-model="speed"
+          min="50"
+          max="300"
+          step="10"
+        />
+        <span>{{ speed }} ms</span>
+      </div>
+      
+      <!-- Start game button -->
       <button v-if="!gameStarted" @click="startGame">開始遊戲</button>
     </div>
   </template>
   
   <script>
   export default {
-    name: 'SnakeGame',  // 組件名稱
+    name: 'SnakeGame',
     data() {
       return {
-        gridSize: 20,  // 每格的大小
-        canvasSize: 400,  // 畫布的大小
-        snake: [{ x: 160, y: 160 }],  // 貪食蛇的初始位置
-        food: { x: 200, y: 200 },  // 食物的初始位置
-        dx: 20,  // 控制蛇的方向 (水平)
-        dy: 0,   // 控制蛇的方向 (垂直)
-        score: 0,  // 分數
-        gameInterval: null,  // 遊戲更新的定時器
-        gameStarted: false,  // 是否開始遊戲
+        gridSize: 20,
+        canvasSize: 400,
+        snake: [{ x: 160, y: 160 }],
+        food: { x: 200, y: 200 },
+        dx: 20,
+        dy: 0,
+        score: 0,
+        gameInterval: null,
+        gameStarted: false,
+        speed: 100, // Default speed (milliseconds per frame)
       };
     },
     methods: {
-      // 隨機生成食物位置
       randomPosition() {
         return Math.floor(Math.random() * (this.canvasSize / this.gridSize)) * this.gridSize;
       },
-      // 畫出貪食蛇
       drawSnake() {
         const ctx = this.$refs.gameCanvas.getContext('2d');
         this.snake.forEach(segment => {
@@ -37,51 +51,45 @@
           ctx.fillRect(segment.x, segment.y, this.gridSize, this.gridSize);
         });
       },
-      // 畫出食物
       drawFood() {
         const ctx = this.$refs.gameCanvas.getContext('2d');
         ctx.fillStyle = 'red';
         ctx.fillRect(this.food.x, this.food.y, this.gridSize, this.gridSize);
       },
-      // 更新遊戲邏輯
       updateGame() {
         const head = { x: this.snake[0].x + this.dx, y: this.snake[0].y + this.dy };
-  
-        // 檢查是否撞牆或撞到自己
+    
+        // Check if snake hits the wall or itself
         if (head.x < 0 || head.x >= this.canvasSize || head.y < 0 || head.y >= this.canvasSize || this.isSnakeCollision(head)) {
           return this.gameOver();
         }
-  
-        this.snake.unshift(head);  // 新增蛇頭
-  
-        // 檢查蛇是否吃到食物
+    
+        this.snake.unshift(head);
+    
+        // Check if snake eats food
         if (head.x === this.food.x && head.y === this.food.y) {
           this.score++;
-          this.food = { x: this.randomPosition(), y: this.randomPosition() };  // 重新生成食物
+          this.food = { x: this.randomPosition(), y: this.randomPosition() };
         } else {
-          this.snake.pop();  // 移除蛇尾
+          this.snake.pop();
         }
-  
-        this.draw();  // 畫出遊戲畫面
+    
+        this.draw();
       },
-      // 檢查蛇是否與自己碰撞
       isSnakeCollision(head) {
         return this.snake.some(segment => segment.x === head.x && segment.y === head.y);
       },
-      // 清空畫布並重新畫出蛇和食物
       draw() {
         const ctx = this.$refs.gameCanvas.getContext('2d');
-        ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);  // 清空畫布
+        ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);
         this.drawSnake();
         this.drawFood();
       },
-      // 遊戲結束
       gameOver() {
-        clearInterval(this.gameInterval);  // 停止遊戲循環
+        clearInterval(this.gameInterval);
         alert(`遊戲結束！你的分數是: ${this.score}`);
-        this.gameStarted = false;  // 重置遊戲狀態
+        this.gameStarted = false;
       },
-      // 處理鍵盤事件
       handleKeydown(event) {
         if (event.key === 'ArrowUp' && this.dy === 0) {
           this.dx = 0;
@@ -97,28 +105,37 @@
           this.dy = 0;
         }
       },
-      // 開始遊戲
       startGame() {
         this.gameStarted = true;
-        this.snake = [{ x: 160, y: 160 }];  // 重置蛇的初始位置
-        this.food = { x: 200, y: 200 };  // 重置食物的初始位置
-        this.score = 0;  // 重置分數
-        this.dx = 20;  // 重置蛇的水平移動
-        this.dy = 0;   // 重置蛇的垂直移動
-  
-        // 設置鍵盤事件監聽
+        this.snake = [{ x: 160, y: 160 }];
+        this.food = { x: 200, y: 200 };
+        this.score = 0;
+        this.dx = 20;
+        this.dy = 0;
+    
+        // Add event listener for keydown
         window.addEventListener('keydown', this.handleKeydown);
-  
-        // 啟動遊戲
-        this.gameInterval = setInterval(this.updateGame, 100);  // 每100毫秒更新一次遊戲
+    
+        // Start the game interval
+        this.startGameInterval();
+      },
+      startGameInterval() {
+        if (this.gameInterval) clearInterval(this.gameInterval); // Clear any existing interval
+        this.gameInterval = setInterval(this.updateGame, this.speed);  // Update game speed based on slider
+      },
+    },
+    watch: {
+      // Watch for changes to speed and restart the game interval with new speed
+      speed(newSpeed) {
+        if (this.gameStarted) {
+          this.startGameInterval();
+        }
       },
     },
     mounted() {
-      // 設置鍵盤事件監聽
       window.addEventListener('keydown', this.handleKeydown);
     },
     beforeDestroy() {
-      // 組件銷毀前移除鍵盤事件監聽
       window.removeEventListener('keydown', this.handleKeydown);
     }
   };
@@ -145,7 +162,7 @@
   }
   
   #gameCanvas {
-    border: 5px solid black;  /* 設置畫布的黑色邊框 */
+    border: 5px solid black;
   }
   
   #score {
@@ -167,6 +184,11 @@
   
   button:hover {
     background-color: #45a049;
+  }
+  
+  input[type="range"] {
+    width: 200px;
+    margin: 10px;
   }
   </style>
   

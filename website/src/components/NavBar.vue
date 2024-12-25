@@ -46,7 +46,7 @@
                                 <br />
                                 <label :style="{  marginBottom: '300px' }">Username</label>
                                 <br />
-                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }">登入</a-button>
+                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }" href="/login">登入</a-button>
                             </div>
                         </div>
                     </template>

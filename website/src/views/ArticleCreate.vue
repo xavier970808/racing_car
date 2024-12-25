@@ -35,18 +35,18 @@ export default {
         <a-layout-content class="form-content" align="center">
             <a-form :model="form" :style="{ width: '600px' }" @submit="handleSubmit">
                 <a-form-item field="post" label="標題">
-                    <a-input v-model="form.post" placeholder="please enter your post..." />
+                    <a-input v-model="form.name" placeholder="請輸入標題" />
                 </a-form-item>
                 <a-form-item label="上傳圖片" field="image">
                     <a-upload limit="1" draggable="1"
-                        action="http://localhost:20842/uploadpic"
+                        action="https://ra-usually-patient-samples.trycloudflare.com/uploadf"
                         accept=".jpg, .jpeg, .png"/>
                 </a-form-item>
                 <a-form-item label="上傳文章 (markdown)" field="markdown">
                     <br/>
 
                     <br/>
-                    <a-upload limit="1" draggable="1" upload="/uploadmd" @before-upload="beforeUploadMd" accept=".md"/>
+                    <a-upload limit="1" draggable="1" upload="https://diabetes-fans-became-spoken.trycloudflare.com/uploadmd" @before-upload="beforeUploadMd" accept=".md"/>
                     
 
                 </a-form-item>

@@ -4,8 +4,16 @@
       <canvas id="gameCanvas" ref="gameCanvas" width="400" height="400"></canvas>
       <div id="score">分數: {{ score }}</div>
       
-      <!-- Slider to adjust game speed -->
+      <!-- 密码输入框 -->
       <div>
+        <label for="password">输入密码以调整游戏速度:</label>
+        <input type="password" v-model="password" />
+        <button class="confirm-button" @click="checkPassword" >確認密碼</button>
+        <span v-if="!isPasswordCorrect" style="color: red;">密码错误</span>
+      </div>
+      
+      <!-- Slider to adjust game speed -->
+      <div v-if="isPasswordCorrect">
         <label for="speedSlider">遊戲速度:</label>
         <input
           type="range"
@@ -21,25 +29,27 @@
       <!-- Start game button -->
       <button v-if="!gameStarted" @click="startGame">開始遊戲</button>
     </div>
-  </template>
-  
+</template>
+
   <script>
   export default {
-    name: 'SnakeGame',
-    data() {
-      return {
-        gridSize: 20,
-        canvasSize: 400,
-        snake: [{ x: 160, y: 160 }],
-        food: { x: 200, y: 200 },
-        dx: 20,
-        dy: 0,
-        score: 0,
-        gameInterval: null,
-        gameStarted: false,
-        speed: 100, // Default speed (milliseconds per frame)
-      };
-    },
+    nname: 'SnakeGame',
+  data() {
+    return {
+      gridSize: 20,
+      canvasSize: 400,
+      snake: [{ x: 160, y: 160 }],
+      food: { x: 200, y: 200 },
+      dx: 20,
+      dy: 0,
+      score: 0,
+      gameInterval: null,
+      gameStarted: false,
+      speed: 100, // Default speed (milliseconds per frame)
+      password: '', // 用于存储用户输入的密码
+      isPasswordCorrect: false, // 用于标识密码是否正确
+    };
+  },
     methods: {
       randomPosition() {
         return Math.floor(Math.random() * (this.canvasSize / this.gridSize)) * this.gridSize;
@@ -123,6 +133,15 @@
         if (this.gameInterval) clearInterval(this.gameInterval); // Clear any existing interval
         this.gameInterval = setInterval(this.updateGame, this.speed);  // Update game speed based on slider
       },
+      checkPassword() {
+      const correctPassword = 'x'; // 在这里设置正确的密码
+      if (this.password === correctPassword) {
+        this.isPasswordCorrect = true;
+        this.password = ''; // 清空密码输入框
+      } else {
+        this.isPasswordCorrect = false;
+      }
+    },
     },
     watch: {
       // Watch for changes to speed and restart the game interval with new speed
@@ -190,5 +209,11 @@
     width: 200px;
     margin: 10px;
   }
+
+  .confirm-button {
+  width: 120px; /* 确认按钮的宽度 */
+  height: 30px; /* 确认按钮的高度 */
+  font-size: 16px; /* 更改确认按钮的文字大小 */
+}
   </style>
   

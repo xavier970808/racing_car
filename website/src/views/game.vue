@@ -174,7 +174,7 @@ h1.title {
   line-height: 47px;
   font-weight: bold;
   border-radius: 3px;
-  color: white;
+  color: rgb(244, 81, 173);
   margin-top: 8px;
   text-align: center; }
   .score-container:after, .best-container:after {

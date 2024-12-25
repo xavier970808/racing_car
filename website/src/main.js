@@ -11,6 +11,8 @@ import Router from './router.js'
 import '@arco-design/web-vue/dist/arco.css';
 
 const app = createApp(App)
+// 设置为暗黑主题
+document.body.setAttribute('arco-theme', 'light')
 
 loadOml2d({
     dockedPosition: "right",

@@ -39,14 +39,14 @@ export default {
                 </a-form-item>
                 <a-form-item label="上傳圖片" field="image">
                     <a-upload limit="1" draggable="1"
-                        action="https://ra-usually-patient-samples.trycloudflare.com/uploadf"
+                        action="/uploadf"
                         accept=".jpg, .jpeg, .png"/>
                 </a-form-item>
                 <a-form-item label="上傳文章 (markdown)" field="markdown">
                     <br/>
 
                     <br/>
-                    <a-upload limit="1" draggable="1" upload="https://diabetes-fans-became-spoken.trycloudflare.com/uploadmd" @before-upload="beforeUploadMd" accept=".md"/>
+                    <a-upload limit="1" draggable="1" action="https://comic-produced-seeds-oxide.trycloudflare.com/uploadmd" accept=".md"/> 
                     
 
                 </a-form-item>

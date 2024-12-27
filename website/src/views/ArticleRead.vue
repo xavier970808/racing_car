@@ -4,9 +4,10 @@
         <a-col flex="2">
             <img src="http://eb118-file.cdn.bcebos.com/upload/a7cc8b8547c5493d82ca8df8c7c8e835_1099885552.png"
                 alt="article-main-image" width="100%" />
-            <div class="read-block" :style="{ padding: '0px' }" >
+            <div class="read-block" :style="{ padding: '0px' }">
                 <div class="page-header" :style="{ padding: '0', display: flex, textAlign: 'left' }">
-                    <h1 class="title" :style="{ fontSize: '36px', fontWeight: '500', margin: '0px' }">網頁設計入門指南：從零開始打造你的第一個網站
+                    <h1 class="title" :style="{ fontSize: '36px', fontWeight: '500', margin: '0px' }">
+                        網頁設計入門指南：從零開始打造你的第一個網站
                         <!--莉莉絕對不是傲嬌-->
                     </h1>
                     <span :style="{ margin: '0px' }">
@@ -14,37 +15,42 @@
                 </div>
                 <div class="page-content" :style="{ padding: '0px' }">
                     <h2 id="-">引言</h2>
-<p>在這個數字化的時代，網頁設計已經成為了許多人職業生涯的一部分。不管你是企業家、自由職業者，還是學生，掌握網頁設計的基本技能都能為你打開一扇新的門。本文將為你提供一個全面的學習指南，幫助你從零開始，逐步掌握網頁設計的精髓。</p>
-<h2 id="-">第一章：網頁設計基礎</h2>
-<h3 id="1-1-">1.1 什麼是網頁設計？</h3>
-<p>網頁設計是指使用標記語言（如HTML）來創建和維護網站。它包括視覺設計、用戶體驗（UX）設計、界面設計（UI）、以及前端開發等多個方面。優秀的網頁設計不僅要美觀，還要易於使用，並且能夠在不同的設備上正常顯示。</p>
-<h3 id="1-2-html-css-">1.2 HTML與CSS基礎</h3>
-<ul>
-<li><strong>HTML（超文本標記語言）</strong>：用於定義網頁的結構和內容。它是所有網頁的骨架。</li>
-<li><strong>CSS（層疊樣式表）</strong>：用於控制網頁的外觀和布局。它使得頁面更加美觀和一致。</li>
-</ul>
-<p>建議初學者從W3Schools或MDN Web Docs開始學習HTML和CSS的基礎知識。這些資源提供了詳盡的教程和實例，適合自學。</p>
-<h3 id="1-3-">1.3 響應式設計</h3>
-<p>隨著移動設備的普及，響應式設計變得越來越重要。響應式設計意味著你的網站能夠自動適應不同尺寸的屏幕，從而為用戶提供最佳的瀏覽體驗。學習媒體查詢（Media Queries）和彈性布局（Flexible Layouts）是實現響應式設計的關鍵。</p>
-<h2 id="-">第二章：工具與技術</h2>
-<h3 id="2-1-">2.1 開發工具</h3>
-<ul>
-<li><strong>代碼編輯器</strong>：如Visual Studio Code、Sublime Text或Atom，這些工具提供了強大的代碼編輯和開發功能。</li>
-<li><strong>瀏覽器開發者工具</strong>：幾乎所有的現代瀏覽器都帶有開發者工具，可以用來檢查和調試HTML和CSS代碼。</li>
-</ul>
-<h3 id="2-2-">2.2 框架與庫</h3>
-<ul>
-<li><strong>Bootstrap</strong>：一個流行的前端框架，它可以幫助你快速建立響應式網站。</li>
-<li><strong>jQuery</strong>：一個JavaScript庫，簡化了HTML文檔遍歷和操作、事件處理、動畫效果等任務。</li>
-</ul>
-<h2 id="-">第三章：實踐與項目</h2>
-<p>理論學習之後，最好的方法是動手實踐。你可以從模仿現有的網站開始，然後逐步添加自己的創意和功能。創建個人項目，如博客、簡歷網站或小型企業網站，都是很好的練習方式。</p>
-<h2 id="-">第四章：持續學習與社區參與</h2>
-<p>網頁設計是一個不斷發展的領域，新的工具和技術層出不窮。加入線上社區，如Stack Overflow、GitHub或Reddit上的相關小組，可以讓你保持最新的行業動態，並從其他設計師那裡獲得靈感和支持。</p>
-<h2 id="-">結論</h2>
-<p>網頁設計是一門藝術也是一門科學。通過系統地學習基礎知識、掌握必要的工具和技術，並通過實踐不斷提高，你將能夠創建出既美觀又實用的網站。記住，最重要的是不斷實驗和創新，因為這是提升你設計技能的最佳方式。祝你在網頁設計的旅程中取得成功！</p>
+                    <p>在這個數字化的時代，網頁設計已經成為了許多人職業生涯的一部分。不管你是企業家、自由職業者，還是學生，掌握網頁設計的基本技能都能為你打開一扇新的門。本文將為你提供一個全面的學習指南，幫助你從零開始，逐步掌握網頁設計的精髓。
+                    </p>
+                    <h2 id="-">第一章：網頁設計基礎</h2>
+                    <h3 id="1-1-">1.1 什麼是網頁設計？</h3>
+                    <p>網頁設計是指使用標記語言（如HTML）來創建和維護網站。它包括視覺設計、用戶體驗（UX）設計、界面設計（UI）、以及前端開發等多個方面。優秀的網頁設計不僅要美觀，還要易於使用，並且能夠在不同的設備上正常顯示。
+                    </p>
+                    <h3 id="1-2-html-css-">1.2 HTML與CSS基礎</h3>
+                    <ul>
+                        <li><strong>HTML（超文本標記語言）</strong>：用於定義網頁的結構和內容。它是所有網頁的骨架。</li>
+                        <li><strong>CSS（層疊樣式表）</strong>：用於控制網頁的外觀和布局。它使得頁面更加美觀和一致。</li>
+                    </ul>
+                    <p>建議初學者從W3Schools或MDN Web Docs開始學習HTML和CSS的基礎知識。這些資源提供了詳盡的教程和實例，適合自學。</p>
+                    <h3 id="1-3-">1.3 響應式設計</h3>
+                    <p>隨著移動設備的普及，響應式設計變得越來越重要。響應式設計意味著你的網站能夠自動適應不同尺寸的屏幕，從而為用戶提供最佳的瀏覽體驗。學習媒體查詢（Media
+                        Queries）和彈性布局（Flexible Layouts）是實現響應式設計的關鍵。</p>
+                    <h2 id="-">第二章：工具與技術</h2>
+                    <h3 id="2-1-">2.1 開發工具</h3>
+                    <ul>
+                        <li><strong>代碼編輯器</strong>：如Visual Studio Code、Sublime Text或Atom，這些工具提供了強大的代碼編輯和開發功能。</li>
+                        <li><strong>瀏覽器開發者工具</strong>：幾乎所有的現代瀏覽器都帶有開發者工具，可以用來檢查和調試HTML和CSS代碼。</li>
+                    </ul>
+                    <h3 id="2-2-">2.2 框架與庫</h3>
+                    <ul>
+                        <li><strong>Bootstrap</strong>：一個流行的前端框架，它可以幫助你快速建立響應式網站。</li>
+                        <li><strong>jQuery</strong>：一個JavaScript庫，簡化了HTML文檔遍歷和操作、事件處理、動畫效果等任務。</li>
+                    </ul>
+                    <h2 id="-">第三章：實踐與項目</h2>
+                    <p>理論學習之後，最好的方法是動手實踐。你可以從模仿現有的網站開始，然後逐步添加自己的創意和功能。創建個人項目，如博客、簡歷網站或小型企業網站，都是很好的練習方式。</p>
+                    <h2 id="-">第四章：持續學習與社區參與</h2>
+                    <p>網頁設計是一個不斷發展的領域，新的工具和技術層出不窮。加入線上社區，如Stack
+                        Overflow、GitHub或Reddit上的相關小組，可以讓你保持最新的行業動態，並從其他設計師那裡獲得靈感和支持。</p>
+                    <h2 id="-">結論</h2>
+                    <p>網頁設計是一門藝術也是一門科學。通過系統地學習基礎知識、掌握必要的工具和技術，並通過實踐不斷提高，你將能夠創建出既美觀又實用的網站。記住，最重要的是不斷實驗和創新，因為這是提升你設計技能的最佳方式。祝你在網頁設計的旅程中取得成功！
+                    </p>
 
-                <!--
+                    <!--
                     <p>午后的校园，阳光温柔地洒在樱花树下，一片片粉色的花瓣随风飘落，宛如一场梦幻般的樱花雨。莉莉坐在柔软的樱花花瓣上，手中捧着一本厚重的古典文学书籍。阳光透过稀疏的樱花枝叶，洒在她的侧脸上，为她那精致的面容增添了几分温柔与恬静。
 莉莉的长发如丝般顺滑，微风拂过，几缕发丝轻轻飘起，她时不时地用纤细的手指轻轻撩动，仿佛在享受这樱花树下的宁静时光。突然，她的手指一滑，书本从手中滑落，轻轻地掉在柔软的樱花花瓣上，发出“啪”的一声轻响，打破了周围的宁静。
 莉莉眉头一皱，脸上闪过一丝不悦。她嘟起嘴，低声嘟囔道：“真是的，这种小事都做不好！明明我这么小心……”
@@ -218,7 +224,7 @@
 <style scoped>
 .page-header {
     width: 100%;
-    margin: 40px  0;
+    margin: 40px 0;
 }
 
 .read-block {
@@ -227,11 +233,40 @@
     text-align: left;
     height: 100vh;
     display: inline-block;
-    
+
 }
 </style>
 <script>
+import { ref } from 'vue'
+import axios from 'axios'
+import showdown from 'showdown';
+// 定义一个异步函数以获取数据
+const fetchUserData = async (dataSource) => {
+    try {
+        const postData = { id: this.$route.params.id };
+        const response = await axios.post('http://localhost:8080/api/getArticlesContent', postData);
+
+        //const response = await axios.post('/api/getArticles', postData);
+        dataSource.value = response.data;
+        console.log(response.data);
+
+    } catch (error) {
+        console.error('获取文章信息时出错:', error);
+    }
+};
+
 export default {
     name: 'ArticleRead',
+    setup() {
+        const dataSource = ref([]);
+        fetchUserData(dataSource);
+        var showdown = require(showdown),
+            converter = new showdown.Converter(),
+            text = dataSource.value.content,
+            html = converter.makeHtml(text);
+        return {
+            html,
+        }
+    },
 };
 </script>

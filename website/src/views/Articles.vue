@@ -28,7 +28,7 @@
                   </template>
                   <a-list-item-meta>
                     <template #title>
-                      <h2>{{ item.title }}</h2>
+                      <a-link href="/articles/{{ item.id }}">{{ item.title }}</a-link>
                     </template>
                   </a-list-item-meta>
                 </a-list-item>
@@ -73,8 +73,9 @@ const fetchUserData = async (dataSource) => {
 
     //const response = await axios.post('/api/getArticles', postData);
     dataSource.value = response.data;
-// 更新 paginationProps 的 total 属性
-paginationProps.total = response.data.length;
+    console.log(response.data);
+  // 更新 paginationProps 的 total 属性
+    paginationProps.total = response.data.length;
   } catch (error) {
     console.error('获取文章信息时出错:', error);
   }

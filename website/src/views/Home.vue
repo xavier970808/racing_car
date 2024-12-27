@@ -4,6 +4,7 @@ export default {
     setup() {
         const visited_count = 1000;
         const images = [
+        'https://th.bing.com/th/id/OIP.LXbJv757DPh9_G2sWyOu0wHaDt?w=973&h=487&rs=1&pid=ImgDetMain',
             'https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/cd7a1aaea8e1c5e3d26fe2591e561798.png~tplv-uwbnlip3yd-webp.webp',
             'https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/6480dbc69be1b5de95010289787d64f1.png~tplv-uwbnlip3yd-webp.webp',
             'https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/0265a04fddbd77a19602a15d9d55d797.png~tplv-uwbnlip3yd-webp.webp',
@@ -72,6 +73,7 @@ export default {
     flex: 1;
     padding: 24px;
 }
+
 @media (max-width: 800px) {
     .a-layout-content{
         padding: 16px;

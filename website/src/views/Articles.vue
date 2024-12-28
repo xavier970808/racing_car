@@ -28,7 +28,7 @@
                   </template>
                   <a-list-item-meta>
                     <template #title>
-                      <a-link href="/articles/{{ item.id }}">{{ item.title }}</a-link>
+                      <a-link :href="`/articles/read/${ item.id }`">{{ item.title }}</a-link>
                     </template>
                   </a-list-item-meta>
                 </a-list-item>
@@ -69,7 +69,7 @@ const paginationProps = reactive({
 const fetchUserData = async (dataSource) => {
   try {
     const postData = {};
-    const response = await axios.post('http://localhost:8080/api/getArticles', postData);
+    const response = await axios.post('https://solid-departments-tackle-domain.trycloudflare.com/api/getArticles', postData);
 
     //const response = await axios.post('/api/getArticles', postData);
     dataSource.value = response.data;

@@ -2,18 +2,15 @@
     <a-row width="100%" justify="center">
         <a-col flex="1"></a-col>
         <a-col flex="2">
-            <img src="http://eb118-file.cdn.bcebos.com/upload/a7cc8b8547c5493d82ca8df8c7c8e835_1099885552.png"
-                alt="article-main-image" width="100%" />
+
             <div class="read-block" :style="{ padding: '0px' }">
                 <div class="page-header" :style="{ padding: '0', display: flex, textAlign: 'left' }">
-                    <h1 class="title" :style="{ fontSize: '36px', fontWeight: '500', margin: '0px' }">
-                        網頁設計入門指南：從零開始打造你的第一個網站
-                        <!--莉莉絕對不是傲嬌-->
-                    </h1>
-                    <span :style="{ margin: '0px' }">
-                        <!--傲嬌的莉莉和杰克的愛情故事--></span>
+                    <img src="http://eb118-file.cdn.bcebos.com/upload/a7cc8b8547c5493d82ca8df8c7c8e835_1099885552.png"
+                        alt="article-main-image" width="100%" />
                 </div>
-                <div class="page-content" :style="{ padding: '0px' }">
+                <div class="page-content" :style="{ padding: '0px' }" v-html="html" />
+
+                <!--
                     <h2 id="-">引言</h2>
                     <p>在這個數字化的時代，網頁設計已經成為了許多人職業生涯的一部分。不管你是企業家、自由職業者，還是學生，掌握網頁設計的基本技能都能為你打開一扇新的門。本文將為你提供一個全面的學習指南，幫助你從零開始，逐步掌握網頁設計的精髓。
                     </p>
@@ -48,9 +45,9 @@
                         Overflow、GitHub或Reddit上的相關小組，可以讓你保持最新的行業動態，並從其他設計師那裡獲得靈感和支持。</p>
                     <h2 id="-">結論</h2>
                     <p>網頁設計是一門藝術也是一門科學。通過系統地學習基礎知識、掌握必要的工具和技術，並通過實踐不斷提高，你將能夠創建出既美觀又實用的網站。記住，最重要的是不斷實驗和創新，因為這是提升你設計技能的最佳方式。祝你在網頁設計的旅程中取得成功！
-                    </p>
+                    </p>-->
 
-                    <!--
+                <!--
                     <p>午后的校园，阳光温柔地洒在樱花树下，一片片粉色的花瓣随风飘落，宛如一场梦幻般的樱花雨。莉莉坐在柔软的樱花花瓣上，手中捧着一本厚重的古典文学书籍。阳光透过稀疏的樱花枝叶，洒在她的侧脸上，为她那精致的面容增添了几分温柔与恬静。
 莉莉的长发如丝般顺滑，微风拂过，几缕发丝轻轻飘起，她时不时地用纤细的手指轻轻撩动，仿佛在享受这樱花树下的宁静时光。突然，她的手指一滑，书本从手中滑落，轻轻地掉在柔软的樱花花瓣上，发出“啪”的一声轻响，打破了周围的宁静。
 莉莉眉头一皱，脸上闪过一丝不悦。她嘟起嘴，低声嘟囔道：“真是的，这种小事都做不好！明明我这么小心……”
@@ -214,7 +211,6 @@
 莉莉听了，脸上泛起一丝红晕，但她仍然傲娇地抬起头，瞪了杰克一眼说：“哼，算你会说话。不过，既然你已经这么说了，本小姐就勉为其难地接受你的心意吧。”
 说完，她轻轻地靠在杰克的怀里，两人一起享受着这难得的宁静时光。樱花在风中轻轻飘落，仿佛也在为他们的爱情送上最真挚的祝福。
                     </p>-->
-                </div>
             </div>
         </a-col>
         <a-col flex="1"></a-col>
@@ -240,11 +236,12 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import showdown from 'showdown';
+import { useRoute } from 'vue-router';
 // 定义一个异步函数以获取数据
-const fetchUserData = async (dataSource) => {
+const fetchUserData = async (dataSource, id) => {
     try {
-        const postData = { id: this.$route.params.id };
-        const response = await axios.post('http://localhost:8080/api/getArticlesContent', postData);
+        const postData = { id: id };
+        const response = await axios.post('https://solid-departments-tackle-domain.trycloudflare.com/api/getArticleContent', postData);
 
         //const response = await axios.post('/api/getArticles', postData);
         dataSource.value = response.data;
@@ -258,12 +255,14 @@ const fetchUserData = async (dataSource) => {
 export default {
     name: 'ArticleRead',
     setup() {
+        const route = useRoute(); // 使用 useRoute 获取路由信息
         const dataSource = ref([]);
-        fetchUserData(dataSource);
-        var showdown = require(showdown),
-            converter = new showdown.Converter(),
-            text = dataSource.value.content,
-            html = converter.makeHtml(text);
+        const html = ref('');
+        fetchUserData(dataSource, route.params.id).then(() => {
+            const converter = new showdown.Converter(); // 直接使用 import 的 showdown
+            html.value = converter.makeHtml(dataSource.value.content);
+        });
+
         return {
             html,
         }

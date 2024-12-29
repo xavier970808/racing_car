@@ -110,7 +110,7 @@
     </body>
   </html>
 </template>
-<style>
+<style scoped>
   @import url(fonts/clear-sans.css);
 
 html, body {

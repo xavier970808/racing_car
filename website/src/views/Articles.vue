@@ -28,7 +28,7 @@
                   </template>
                   <a-list-item-meta>
                     <template #title>
-                      <h2>{{ item.title }}</h2>
+                      <a-link href="/articles/{{ item.id }}">{{ item.title }}</a-link>
                     </template>
                   </a-list-item-meta>
                 </a-list-item>
@@ -57,32 +57,39 @@
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import axios from 'axios'
 
-const names = ['Socrates', 'Balzac', 'Plato'];
-const imageSrc = [
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/29c1f9d7d17c503c5d7bf4e538cb7c4f.png~tplv-uwbnlip3yd-webp.webp',
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/04d7bc31dd67dcdf380bc3f6aa07599f.png~tplv-uwbnlip3yd-webp.webp',
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/1f61854a849a076318ed527c8fca1bbf.png~tplv-uwbnlip3yd-webp.webp',
-];
-const dataSource = new Array(15).fill(null).map((_, index) => {
-  return {
-    index: index,
-    title: names[index % names.length],
-    description:
-      'Beijing ByteDance Technology Co., Ltd. is an enterprise located in China. ByteDance has products such as TikTok, Toutiao, volcano video and Douyin (the Chinese version of TikTok).',
-    imageSrc: imageSrc[index % imageSrc.length],
-  };
-});
+const paginationProps = reactive({
+      defaultPageSize: 10,
+      total: 0 // 初始时设置为 0
+    });
+
+// 定义一个异步函数以获取数据
+const fetchUserData = async (dataSource) => {
+  try {
+    const postData = {};
+    const response = await axios.post('https://solid-departments-tackle-domain.trycloudflare.com/api/getArticles', postData);
+
+    //const response = await axios.post('/api/getArticles', postData);
+    dataSource.value = response.data;
+    console.log(response.data);
+  // 更新 paginationProps 的 total 属性
+    paginationProps.total = response.data.length;
+  } catch (error) {
+    console.error('获取文章信息时出错:', error);
+  }
+};
+
+// 调用函数
 export default {
   name: 'Articles',
   setup() {
+    const dataSource = ref([]);
+    fetchUserData(dataSource);
     return {
       dataSource,
-      paginationProps: reactive({
-        defaultPageSize: 10,
-        total: dataSource.length
-      })
+      paginationProps,
     }
   },
 };

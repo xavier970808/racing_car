@@ -1,267 +1,230 @@
 <template>
-    <div id="app">
-      <div id="game-container">
-        <canvas ref="gameCanvas"></canvas>
-      </div>
-      <button @click="generateMaze">生成随机迷宫</button>
-      <div v-if="timerActive" class="timer">
-        <p>生成时间: {{ timeTaken }} 秒</p>
-      </div>
+  <div>
+    <div>
+      <br/><br/>
+      <input type="file" accept="image/*" @change="onFile">
+      模式：
+      <label><input type="radio" name="mode" value="1" v-model="mode" /> 严格 </label>
+      <label><input type="radio" name="mode" value="2" v-model="mode" /> 模糊 </label>
+      <br/>
+      
+      动画速度：<input type="number" v-model.number="skipCount">
+      <span v-show="clickPoints.length < 2">请点击图片的任意两处开始寻路 </span>
+      <span v-show="begin">起点：{{ begin }}</span>
+      <span v-show="end">终点：{{ end }}</span>
     </div>
-  </template>
+    
+    <div>
+      width: <input type="number" v-model.number="widthInput"> height: <input type="number" v-model.number="heightInput">
+      速度倍率：<input type="number" v-model.number="generatSpeed">
+      方格大小：<input type="number" v-model.number="cellSize"><br/>
+      <button @click="generatMaze1">生成迷宫（破墙法）</button>
+      <!--<button @click="generatMaze2">生成迷宫（造墙法）</button>-->
+    </div>
+
+    <div class="maze-view" @click="onClickMaze">
+      <canvas style="z-index: 0" ref="canvas"></canvas>
+      <canvas style="z-index: 1" ref="canvasChecked"></canvas>
+      <canvas style="z-index: 2" ref="canvasPath"></canvas>
+    </div>
+
+  </div>
+</template>
+
 <script>
+import { solveMaze, MazeGanerator } from './maze/maze.js'
+import defaultMazeImg from '@/assets/maze1.png'
+
+async function waitFrame () {
+  return new Promise((resolve) => requestAnimationFrame(resolve))
+}
+
 export default {
-  data() {
+  data () {
     return {
-      mazeWidth: 20,  // 迷宫宽度（格数）
-      mazeHeight: 20, // 迷宫高度（格数）
-      blockSize: 30,  // 每个格子的大小
-      maze: [],       // 迷宫数据
-      startX: 0,      // 起点X位置
-      startY: 0,      // 起点Y位置
-      endX: 0,        // 终点X位置
-      endY: 0,        // 终点Y位置
-      playerX: 0,     // 小人当前位置X
-      playerY: 0,     // 小人当前位置Y
-      timerActive: false, // 计时器是否激活
-      timeTaken: 0,   // 生成迷宫所用时间
-      startTime: null, // 计时器开始时间
-      timerInterval: null, // 用于清除计时器的间隔ID
-    };
+      width: 0,
+      height: 0,
+      widthInput: 20,
+      heightInput: 18,
+      mode: "1",
+      path: [],
+      clickPoints: [],
+      current: null,
+      isExitSolve: false,
+      skipCount: 5000,
+      generatSpeed: 5,
+      cellSize: 50
+    }
   },
-  mounted() {
-    this.canvas = this.$refs.gameCanvas;
-    this.ctx = this.canvas.getContext('2d');
-    this.canvas.width = this.mazeWidth * this.blockSize;
-    this.canvas.height = this.mazeHeight * this.blockSize;
-
-    // 初始生成迷宫
-    this.generateMaze();
-
-    // 监听键盘事件
-    window.addEventListener('keydown', this.handleKeyDown);
-  },
-  beforeDestroy() {
-    // 清除事件监听器
-    window.removeEventListener('keydown', this.handleKeyDown);
+  computed: {
+    begin () {
+      let { clickPoints } = this
+      if (clickPoints.length >= 2) {
+        return clickPoints[clickPoints.length - 2]
+      } else if (clickPoints.length === 1) {
+        return clickPoints[0]
+      } else {
+        return null
+      }
+    },
+    end () {
+      let { clickPoints } = this
+      if (clickPoints.length >= 2) {
+        return clickPoints[clickPoints.length - 1]
+      } else {
+        return null
+      }
+    }
   },
   methods: {
-    // 生成随机迷宫
-    generateMaze() {
-      // 激活计时器
-      this.startTimer();
-
-      // 生成迷宫
-      this.maze = this.createEmptyMaze();
-      this.carveMaze(0, 0);
-
-      // 设置起点和终点
-      this.startX = 0; // 起点X
-      this.startY = 0; // 起点Y
-      this.endX = this.mazeWidth - 1; // 终点X
-      this.endY = this.mazeHeight - 1; // 终点Y
-
-      // 设置玩家初始位置
-      this.playerX = this.startX;
-      this.playerY = this.startY;
-
-      // 确保迷宫中有从起点到终点的路径
-      this.ensurePathExists();
-
-      // 绘制迷宫
-      this.drawMaze();
-
-      // 停止计时器
-      this.stopTimer();
-    },
-
-    // 创建一个空迷宫
-    createEmptyMaze() {
-      const maze = [];
-      for (let y = 0; y < this.mazeHeight; y++) {
-        const row = [];
-        for (let x = 0; x < this.mazeWidth; x++) {
-          row.push(1); // 1 表示墙壁
-        }
-        maze.push(row);
-      }
-      return maze;
-    },
-
-    // 使用递归分割生成迷宫
-    carveMaze(x, y) {
-      const directions = [
-        [0, -1],  // 上
-        [1, 0],   // 右
-        [0, 1],   // 下
-        [-1, 0],  // 左
-      ];
-
-      // 打开当前格子
-      this.maze[y][x] = 0;
-
-      // 打乱方向顺序
-      for (let i = 0; i < directions.length; i++) {
-        const dir = directions[Math.floor(Math.random() * directions.length)];
-        const nx = x + dir[0] * 2;
-        const ny = y + dir[1] * 2;
-
-        // 检查边界和是否已经访问过
-        if (nx >= 0 && ny >= 0 && nx < this.mazeWidth && ny < this.mazeHeight && this.maze[ny][nx] === 1) {
-          // 打开墙壁
-          this.maze[y + dir[1]][x + dir[0]] = 0;
-          this.carveMaze(nx, ny);
-        }
+    onFile ({ target }) {
+      let vm = this
+      let { files } = target
+      if (files.length) {
+        let url = URL.createObjectURL(files[0])
+        vm.loadImage(url)
       }
     },
+    loadImage (url) {
+      let vm = this
+      vm.clickPoints = []
+      let image = new Image()
+      image.src = url
+      
+      image.onload = () => {
+        let { canvas, canvasChecked, canvasPath } = vm.$refs
+        let width = canvas.width = vm.width = image.width
+        let height = canvas.height = vm.height = image.height
+        canvasPath.width = canvasChecked.width = width
+        canvasPath.height = canvasChecked.height = height
 
-    // 确保起点到终点之间有路径
-    ensurePathExists() {
-      const stack = [[this.startX, this.startY]];
-      const visited = Array.from({ length: this.mazeHeight }, () => Array(this.mazeWidth).fill(false));
-      visited[this.startY][this.startX] = true;
+        let ctx = canvas.getContext('2d')
+        ctx.drawImage(image, 0, 0, width, height)
 
-      const directions = [
-        [0, -1],  // 上
-        [1, 0],   // 右
-        [0, 1],   // 下
-        [-1, 0],  // 左
-      ];
+        URL.revokeObjectURL(url)
+      }
+    },
+    async generatMaze1 () {
+      let vm = this
+      let { widthInput, heightInput, cellSize } = this
+      let { canvas, canvasChecked, canvasPath } = this.$refs
+      let generator = new MazeGanerator(widthInput, heightInput, cellSize)
+      generator.build()
+      generator.renderCanvas(canvas)
 
-      while (stack.length > 0) {
-        const [x, y] = stack.pop();
-        for (let dir of directions) {
-          const nx = x + dir[0];
-          const ny = y + dir[1];
-          if (nx >= 0 && ny >= 0 && nx < this.mazeWidth && ny < this.mazeHeight && !visited[ny][nx] && this.maze[ny][nx] === 0) {
-            visited[ny][nx] = true;
-            stack.push([nx, ny]);
+      this.width = widthInput * generator.cellSize
+      this.height = heightInput * generator.cellSize
+      this.clickPoints = []
+      canvasChecked.getContext('2d').clearRect(0, 0, canvasChecked.width, canvasChecked.height)
+      canvasPath.getContext('2d').clearRect(0, 0, canvasPath.width, canvasPath.height)
+
+      let count = 0
+      await generator.breakWall(async (current) => {
+        count++
+        if (count % vm.generatSpeed === 0) {
+          generator.renderCanvas(canvas, current)
+          return waitFrame()
+        }
+      })
+
+      generator.renderCanvas(canvas)
+    },
+    async generatMaze2 () {
+      let vm = this
+      let { widthInput, heightInput, cellSize } = this
+      let { canvas, canvasChecked, canvasPath } = this.$refs
+      let generator = new MazeGanerator(widthInput, heightInput, cellSize)
+
+      this.width = widthInput * generator.cellSize
+      this.height = heightInput * generator.cellSize
+      this.clickPoints = []
+      canvasChecked.getContext('2d').clearRect(0, 0, canvasChecked.width, canvasChecked.height)
+      canvasPath.getContext('2d').clearRect(0, 0, canvasPath.width, canvasPath.height)
+
+      let count = 0
+      await generator.createWall(async () => {
+        count++
+        if (count % vm.generatSpeed === 0) {
+          generator.renderAreasCanvas(canvas)
+          // return new Promise(r => setTimeout(r, 3000))
+          return waitFrame()
+        }
+      })
+
+      generator.renderAreasCanvas(canvas)
+    },
+    onClickMaze ($event) {
+      let { clickPoints } = this
+      clickPoints.push([$event.offsetX, $event.offsetY])
+      if (clickPoints.length >= 2) {
+        this.reload()
+      }
+    },
+    indexToPos (i) {
+      let y = i % this.width
+      let x = Math.floor(i / this.width)
+      return { x, y }
+    },
+    cellStyle (i) {
+      let { x, y } = this.indexToPos(i)
+      return { left: `${y * 1.25}em`, top: `${x * 1.25}em` }
+    },
+    async reload () {
+      let vm = this
+      let { width, height } = vm
+      let { canvas, canvasChecked, canvasPath } = vm.$refs
+
+      canvasPath.width = canvasChecked.width = width
+      canvasPath.height = canvasChecked.height = height
+
+      let ctx = canvas.getContext('2d')
+      let imgData = ctx.getImageData(0, 0, width, height)
+      let m = new Uint32Array(imgData.data.buffer)
+
+      let ctxChecked = canvasChecked.getContext('2d')
+      ctxChecked.clearRect(0, 0, width, height)
+
+      this.isExitSolve = true
+      await waitFrame() // 等待一下，让上次的 solve 退出
+      this.isExitSolve = false
+
+      let count = 0
+
+      await solveMaze(m, width, height, vm.begin, vm.end, vm.mode, async (nodeGraph, current, path, done) => {
+        ctxChecked.fillStyle = "#74b9ff"
+        ctxChecked.fillRect(current.x, current.y, 1, 1)
+
+        count++
+        if (count > vm.skipCount || done) {
+          let ctxPath = canvasPath.getContext('2d')
+          ctxPath.clearRect(0, 0, canvasPath.width, canvasPath.height)
+          ctxPath.fillStyle = '#FF0000'
+          for (let node of path) {
+            ctxPath.fillRect(node.x, node.y, 1, 1)
           }
+          await waitFrame()
+          count = 0
         }
-      }
 
-      if (!visited[this.endY][this.endX]) {
-        this.maze[this.endY][this.endX] = 0;
-        stack.push([this.endX, this.endY]);
-
-        while (stack.length > 0) {
-          const [x, y] = stack.pop();
-          for (let dir of directions) {
-            const nx = x + dir[0];
-            const ny = y + dir[1];
-            if (nx >= 0 && ny >= 0 && nx < this.mazeWidth && ny < this.mazeHeight && this.maze[ny][nx] === 1) {
-              this.maze[ny][nx] = 0;
-              stack.push([nx, ny]);
-            }
-          }
-        }
-      }
-    },
-
-    // 绘制迷宫到 canvas
-    drawMaze() {
-      for (let y = 0; y < this.mazeHeight; y++) {
-        for (let x = 0; x < this.mazeWidth; x++) {
-          if (this.maze[y][x] === 1) {
-            this.ctx.fillStyle = '#000';  // 墙壁是黑色
-          } else {
-            this.ctx.fillStyle = '#fff';  // 空白是白色
-          }
-          this.ctx.fillRect(x * this.blockSize, y * this.blockSize, this.blockSize, this.blockSize);
-        }
-      }
-
-      // 绘制起点（绿色）
-      this.ctx.fillStyle = 'green';
-      this.ctx.fillRect(this.startX * this.blockSize, this.startY * this.blockSize, this.blockSize, this.blockSize);
-
-      // 绘制终点（红色）
-      this.ctx.fillStyle = 'red';
-      this.ctx.fillRect(this.endX * this.blockSize, this.endY * this.blockSize, this.blockSize, this.blockSize);
-
-      // 绘制玩家（蓝色）
-      this.ctx.fillStyle = 'blue';
-      this.ctx.fillRect(this.playerX * this.blockSize, this.playerY * this.blockSize, this.blockSize, this.blockSize);
-    },
-
-    // 处理键盘事件
-    handleKeyDown(event) {
-      let newX = this.playerX;
-      let newY = this.playerY;
-
-      switch (event.key) {
-        case 'ArrowUp':
-          newY--;
-          break;
-        case 'ArrowDown':
-          newY++;
-          break;
-        case 'ArrowLeft':
-          newX--;
-          break;
-        case 'ArrowRight':
-          newX++;
-          break;
-      }
-
-      // 检查新位置是否合法（不超出边界且不是墙壁）
-      if (newX >= 0 && newX < this.mazeWidth && newY >= 0 && newY < this.mazeHeight && this.maze[newY][newX] === 0) {
-        this.playerX = newX;
-        this.playerY = newY;
-      }
-
-      // 检查是否到达终点
-      if (this.playerX === this.endX && this.playerY === this.endY) {
-        alert('恭喜到达终点！');
-        this.generateMaze();  // 重新生成迷宫
-      }
-
-      // 绘制更新后的迷宫和玩家位置
-      this.drawMaze();
-    },
-
-    // 开始计时器
-    startTimer() {
-      this.timerActive = true;
-      this.startTime = Date.now();
-      this.timerInterval = setInterval(() => {
-        this.timeTaken = ((Date.now() - this.startTime) / 1000).toFixed(2);
-      }, 10); // 每 10 毫秒更新一次
-    },
-
-    // 停止计时器
-    stopTimer() {
-      clearInterval(this.timerInterval);
-      this.timerActive = false;
+        return vm.isExitSolve
+      })
     }
+  },
+  async created () {
+    // this.loadImage(defaultMazeImg)
   }
 }
 </script>
+
 <style scoped>
-#app {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
+.row {
+  margin-bottom: 1em;
 }
-
-#game-container {
+.maze-view {
   position: relative;
+  height: 100vh;
 }
-
-canvas {
-  border: 10px solid #000;
-  background-color: #fff;
-}
-
-.timer {
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: bold;
+.maze-view canvas {
+  position: absolute;
 }
 </style>
-  

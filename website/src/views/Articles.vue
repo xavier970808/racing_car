@@ -28,7 +28,7 @@
                   </template>
                   <a-list-item-meta>
                     <template #title>
-                      <a-link href="/articles/{{ item.id }}">{{ item.title }}</a-link>
+                      <a-link :href="`/articles/read/${ item.id }`">{{ item.title }}</a-link>
                     </template>
                   </a-list-item-meta>
                 </a-list-item>

@@ -110,13 +110,13 @@
     </body>
   </html>
 </template>
-<style scoped>
+<style>
   @import url(fonts/clear-sans.css);
 
 html, body {
   margin: 0;
   padding: 0;
-  background: white;
+  background: #faf8ef;
   color: #776e65;
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px; }
@@ -174,7 +174,7 @@ h1.title {
   line-height: 47px;
   font-weight: bold;
   border-radius: 3px;
-  color: rgb(244, 81, 173);
+  color: white;
   margin-top: 8px;
   text-align: center; }
   .score-container:after, .best-container:after {

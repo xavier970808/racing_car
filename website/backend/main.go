@@ -30,6 +30,7 @@ func main() {
 	// 设置路由处理函数
 	http.HandleFunc("/api/getArticles", handleCORS(getArticles))
 	http.HandleFunc("/api/getArticleContent", handleCORS(getArticleContent))
+	http.HandleFunc("/api/login", handleCORS(login))
 
 	// 启动 HTTP 服务器
 	log.Println("Starting server at port 8080")

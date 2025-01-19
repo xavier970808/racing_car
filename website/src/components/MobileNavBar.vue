@@ -29,7 +29,7 @@
             background: 'var(--color-fill-3)',
             cursor: 'text',
         }" />
-        <div class="menu-right" align="right">
+        <div class="menu-right" align="right"><!--
             <div :style="{ padding: '20px 10px' }">
                 <a-trigger trigger="click" position="left" auto-fit-position :unmount-on-close="false">
                     <icon-search />
@@ -42,7 +42,7 @@
                         </div>
                     </template>
                 </a-trigger>
-            </div>
+            </div>-->
             <div :style="{ padding: '20px 0px' }">
                 <a-trigger trigger="click" position="top" auto-fit-position :unmount-on-close="false">
                     <IconUser />
@@ -53,9 +53,11 @@
                                     <IconUser />
                                 </a-avatar>
                                 <br />
-                                <label :style="{ marginBottom: '300px' }">Username</label>
+                                <label :style="{ marginBottom: '300px' }">{{ getUsername }}</label>
                                 <br />
-                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }">登入</a-button>
+                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }" href="/login" v-if="!isLoggedIn">登入</a-button>
+                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }" @click="handleLogout()" v-else-if="isLoggedIn">登出</a-button>
+
                             </div>
                         </div>
                     </template>
@@ -112,14 +114,32 @@
 }
 </style>
 <script>
-import { IconRight } from '@arco-design/web-vue/es/icon';
+import { useAuthStore } from '@/stores/auth.js';
+import { computed } from 'vue';
 
 export default {
     name: 'MobileNavBar',
+    setup() { 
+        const authStore = useAuthStore();
+        const isLoggedIn = computed(() => authStore.getLoginStatus);
+
+        // 使用 computed 来定义 getUsername
+        const getUsername = computed(() => {
+            const username = authStore.currentUser;
+            return username ? username : "username";
+        });const handleLogout = () => {
+            authStore.logout();
+        }
+        return {
+            isLoggedIn,
+            getUsername,
+            handleLogout,
+        }
+    },
     computed: {
         currentSelectedKey() {
             return this.$route.path.startsWith('/articles') ? '/articles' : this.$route.path;
-        }
+        },
     },
     methods: {
         navigateTo(path) {

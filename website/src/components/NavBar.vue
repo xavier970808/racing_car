@@ -21,6 +21,7 @@
             </a-sub-menu>
         </a-menu>
         <div class="menu-right" align="right">
+            <!--
             <div :style="{ padding: '20px' }">
                 <a-trigger trigger="click" position="left" auto-fit-position :unmount-on-close="false">
                     <icon-search />
@@ -34,6 +35,7 @@
                     </template>
                 </a-trigger>
             </div>
+            -->
             <div :style="{ padding: '20px' }">
                 <a-trigger trigger="click" position="top" auto-fit-position :unmount-on-close="false">
                     <IconUser />
@@ -44,9 +46,12 @@
                                     <IconUser />
                                 </a-avatar>
                                 <br />
-                                <label :style="{  marginBottom: '300px' }">Username</label>
+                                <label>{{ getUsername }}</label>
                                 <br />
-                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }" href="/login">登入</a-button>
+                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }" href="/login"
+                                    v-if="!isLoggedIn">登入</a-button>
+                                <a-button type="primary" size="small" :style="{ marginTop: '10px' }" @click="handleLogout()"
+                                    v-else-if="isLoggedIn">登出</a-button>
                             </div>
                         </div>
                     </template>
@@ -94,8 +99,29 @@
 }
 </style>
 <script>
+import { useAuthStore } from '@/stores/auth.js';
+import { computed } from 'vue';
 export default {
     name: 'NavBar',
+    setup() {
+        const authStore = useAuthStore();// 使用 computed 来定义 isLoggedIn
+        const isLoggedIn = computed(() => authStore.getLoginStatus);
+
+        // 使用 computed 来定义 getUsername
+        const getUsername = computed(() => {
+            const username = authStore.currentUser;
+            return username ? username : "username";
+        });
+        const handleLogout = () => {
+            console.log("logout");
+            authStore.logout();
+        }
+        return {
+            isLoggedIn,
+            getUsername,
+            handleLogout,
+        }
+    },
     computed: {
         currentSelectedKey() {
             return this.$route.path.startsWith('/articles') ? '/articles' : this.$route.path;

@@ -43,10 +43,7 @@ export default {
                         accept=".jpg, .jpeg, .png"/>
                 </a-form-item>
                 <a-form-item label="上傳文章 (markdown)" field="markdown">
-                    <br/>
-
-                    <br/>
-                    <a-upload limit="1" draggable="1" action="https://comic-produced-seeds-oxide.trycloudflare.com/uploadmd" accept=".md"/> 
+                    <a-upload limit="1" draggable="1" action="https://conditions-fully-queen-assuming.trycloudflare.com/uploadmd" accept=".md"/> 
                     
 
                 </a-form-item>

@@ -69,7 +69,7 @@ const paginationProps = reactive({
 const fetchUserData = async (dataSource) => {
   try {
     const postData = {};
-    const response = await axios.post('https://solid-departments-tackle-domain.trycloudflare.com/api/getArticles', postData);
+    const response = await axios.post('http://localhost:8080/api/getArticles', postData);
 
     //const response = await axios.post('/api/getArticles', postData);
     dataSource.value = response.data;

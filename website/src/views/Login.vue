@@ -1,16 +1,16 @@
 <template>
     <div align="center">
         <icon-user style="font-size: 72;"/>
-        <a-form :model="form" :style="{ width: '600px' }" @submit="handleSubmit" layout="vertical">
-            <a-form-item field="name" label="帳號">
-                <a-input v-model="form.name">
+        <a-form :model="form" :style="{ width: '350px' }" @submit="handleSubmit" layout="vertical">
+            <a-form-item field="username" label="帳號">
+                <a-input v-model="form.username" placeholder="帳號">
                     <template #prefix>
                         <icon-user />
                     </template>
                 </a-input>
             </a-form-item>
-            <a-form-item field="post" label="密碼">
-                <a-input v-model="form.post" placeholder="please enter your post...">
+            <a-form-item field="password" label="密碼">
+                <a-input v-model="form.password" placeholder="密碼">
                     <template #prefix>
                         <icon-lock />
                     </template>
@@ -24,17 +24,21 @@
 </template>
 <script>
 import { reactive } from 'vue';
+import { useAuthStore } from '@/stores/auth.js';
 
 export default {
     name: 'Login',
     setup() {
+
+        const authStore = useAuthStore();
         const form = reactive({
-            name: '',
-            post: '',
-            isRead: false,
+            username: '',
+            password: '',
         });
-        const handleSubmit = (data) => {
-            console.log(data);
+        const handleSubmit = () =>{
+            console.log(form.username, form.password);
+            
+            authStore.login(form.username, form.password);
         };
 
         return {

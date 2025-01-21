@@ -1,0 +1,32 @@
+# 使用Golang官方镜像来构建Go项目
+FROM golang:1.23.3 AS build
+
+# 设置工作目录
+WORKDIR /go/src/app
+
+# 复制Go项目文件
+COPY . .
+
+# 安装依赖
+RUN go mod download
+
+# 构建Go项目
+RUN go build -o myapp website
+
+# 使用一个轻量级的基础镜像（如Alpine）来运行应用
+FROM alpine:latest
+
+# 设置工作目录
+WORKDIR /app
+
+# 从构建阶段复制Go二进制文件到运行镜像中
+COPY --from=build /go/src/app/myapp .
+
+# 安装运行Go应用所需的运行时库
+RUN apk add --no-cache libgcc libstdc++
+
+# 暴露应用的端口
+EXPOSE 8080
+
+# 启动应用
+CMD ["./myapp"]

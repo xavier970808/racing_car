@@ -17,16 +17,13 @@ export const useAuthStore = defineStore('auth', {
       console.log(userCredentials);
       try {
         // 发送登录请求到后端
-        
-
         const response = await axios.post('http://localhost:8080/api/login', userCredentials);
-
-        // 假设后端返回的用户信息在 response.data.user
-        this.username = response.data.username; // 设置用户信息
+        // 假设后端返回的用户信息在 response.data.username
+        this.username = username; // 设置用户信息
         this.isLoggedIn = true; // 更新登录状态
       } catch (error) {
         console.error('登录失败:', error);
-        throw error; // 抛出错误以便调用者处理
+        throw error;
       }
     },
     logout() {

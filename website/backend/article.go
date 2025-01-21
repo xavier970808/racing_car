@@ -66,27 +66,36 @@ func getArticleContent(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	articlesList, err := readArticlesFromFile("./articles/articles.json") // 假设文件名为 articles.json
-	var articleId *string
-	for _, article := range articlesList {
-		// 假设文章的id为数字
-		if article.Id ==  {
-			articleId = &article.Id
-			break
-		}
+
+	// 解析请求体中的文章ID
+	var requestBody struct {
+		Id string `json:"id"`
 	}
-	if articleId == nil {
-		http.Error(w, "Article not found", http.StatusNotFound)
+	err := json.NewDecoder(r.Body).Decode(&requestBody)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	articleContent, err := readMarkdownFile("./articles/" + articleId + "/.md") // 假设文件名为 articles/
+	defer r.Body.Close()
+
+	// 检查文章ID是否为空
+	if requestBody.Id == "" {
+		http.Error(w, "Missing 'id' parameter", http.StatusBadRequest)
+		return
+	}
+
+	articleContent, err := readMarkdownFile("./articles/" + requestBody.Id + "/content.md") // 假设文件名为 articles/
 
 	if err != nil {
 		log.Printf("Error reading articles from file: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	var response struct {
+		Img     string `json:"img"`
+		Content string `json:"content"`
+	}
+	response.Content = articleContent
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(articleContent)
+	json.NewEncoder(w).Encode(response)
 }

@@ -2,12 +2,7 @@
     <div class="menu">
         <a-menu mode="horizontal" theme="light" :selected-keys="[currentSelectedKey]">
             <a-menu-item key="title" :style="{ padding: 0, marginRight: '38px' }" disabled>
-                <div :style="{
-                    width: '80px',
-                    height: '30px',
-                    background: 'var(--color-fill-3)',
-                    cursor: 'text',
-                }" />
+                <img src="https://p2.itc.cn/images01/20220126/2a388985d1e7451eb72875b2d8c4fe15.png" alt="logo" style="height: 50px; width: 60px;" />
             </a-menu-item>
             <a-menu-item key="/" @click="navigateTo('/')"><icon-home />首頁</a-menu-item>
             <a-menu-item key="/articles" @click="navigateTo('/articles')"><icon-book />文章</a-menu-item>

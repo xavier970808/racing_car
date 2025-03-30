@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ncyu_study_racing_car_src/src/car.png</file>
+        <file>ncyu_study_racing_car_src/src/game_falied.png</file>
+        <file>ncyu_study_racing_car_src/src/game_name.png</file>
+        <file>ncyu_study_racing_car_src/src/game_pause.png</file>
+        <file>ncyu_study_racing_car_src/src/game_timeout.png</file>
+        <file>ncyu_study_racing_car_src/src/icon.ico</file>
+        <file>ncyu_study_racing_car_src/src/item1.png</file>
+        <file>ncyu_study_racing_car_src/src/item2.png</file>
+        <file>ncyu_study_racing_car_src/src/item3.png</file>
+        <file>ncyu_study_racing_car_src/src/map.png</file>
+        <file>ncyu_study_racing_car_src/src/start_btn.png</file>
+    </qresource>
+</RCC>

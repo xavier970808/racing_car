@@ -26,6 +26,10 @@ private slots:
 
     void on_button_start_game_clicked();
 
+    void on_action_start_game_triggered();
+
+    void on_action_close_game_triggered();
+
 private:
     Ui::MainWindow *ui;
     int time;   //遊戲時間
@@ -42,5 +46,8 @@ private:
     void game_pause();
     void game_stop();
     void move_car();
+    void move_blocks();
+    void detect_blocks();   //偵測障礙物位置
+    bool is_collision(int x, int y);    //判斷是否撞到障礙物
 };
 #endif // MAINWINDOW_H
